@@ -198,12 +198,12 @@ class Reader:
                 yield reader.read(ln).decode('UTF-8')
 
     def read_jsonl(self, file, get_meta=False, autojoin_paragraphs=True, para_joiner='\n\n'):
-        self.fh = open(file, 'rb')
-        print(self.fh)        
-        cctx = zstandard.ZstdDecompressor()
-        reader = io.BufferedReader(cctx.stream_reader(self.fh))
-        rdr = jsonlines.Reader(reader)
-        yield from handle_jsonl(rdr, get_meta, autojoin_paragraphs, para_joiner)
+        with open(file, 'rb') as fh:
+            self.fh = fh
+            cctx = zstandard.ZstdDecompressor()
+            reader = io.BufferedReader(cctx.stream_reader(fh))
+            rdr = jsonlines.Reader(reader)
+            yield from handle_jsonl(rdr, get_meta, autojoin_paragraphs, para_joiner)
 
 
     def read_jsonl_tar(self, file, get_meta=False, autojoin_paragraphs=True, para_joiner='\n\n'):
