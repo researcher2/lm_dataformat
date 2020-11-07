@@ -110,6 +110,7 @@ def handle_jsonl(jsonl_reader, get_meta, autojoin_paragraphs, para_joiner):
 class Reader:
     def __init__(self, in_path):
         self.in_path = in_path
+        self.fh = None
     
     def stream_data(self, get_meta=False, threaded=True):
         if not threaded: return self._stream_data(get_meta)
