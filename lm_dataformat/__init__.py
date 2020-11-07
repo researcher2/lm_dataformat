@@ -198,6 +198,7 @@ class Reader:
                 yield reader.read(ln).decode('UTF-8')
 
     def read_jsonl(self, file, get_meta=False, autojoin_paragraphs=True, para_joiner='\n\n'):
+        print("hello")
         with open(file, 'rb') as fh:
             self.fh = fh
             cctx = zstandard.ZstdDecompressor()
