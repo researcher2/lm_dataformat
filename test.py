@@ -8,11 +8,10 @@ def main():
 
     progress = tqdm.tqdm(total=os.path.getsize(file_path), dynamic_ncols=True, unit_scale=1, unit="byte")
     previous_file_position = 0
-    for doc, meta in reader.stream_data(get_meta=True, threaded=False):
-        pass
-        # current_file_position = reader.fh.tell()
-        # progress.update(current_file_position - previous_file_position)
-        # previous_file_position = current_file_position
+    for doc, meta in reader._stream_data(get_meta=True):
+        current_file_position = reader.fh.tell()
+        progress.update(current_file_position - previous_file_position)
+        previous_file_position = current_file_position
 
     progress.close()
 
