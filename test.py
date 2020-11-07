@@ -14,6 +14,6 @@ def main():
         previous_file_position = current_file_position
 
     progress.close()
-
+    
 if __name__ == '__main__':
     main()
