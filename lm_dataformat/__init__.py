@@ -199,6 +199,7 @@ class Reader:
 
     def read_jsonl(self, file, get_meta=False, autojoin_paragraphs=True, para_joiner='\n\n'):
         with open(file, 'rb') as fh:
+            self.fh = fh
             cctx = zstandard.ZstdDecompressor()
             reader = io.BufferedReader(cctx.stream_reader(fh))
             rdr = jsonlines.Reader(reader)
