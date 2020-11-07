@@ -110,7 +110,6 @@ def handle_jsonl(jsonl_reader, get_meta, autojoin_paragraphs, para_joiner):
 class Reader:
     def __init__(self, in_path):
         self.in_path = in_path
-        self.fh = None
     
     def stream_data(self, get_meta=False, threaded=True):
         if not threaded: return self._stream_data(get_meta)
@@ -199,13 +198,11 @@ class Reader:
                 yield reader.read(ln).decode('UTF-8')
 
     def read_jsonl(self, file, get_meta=False, autojoin_paragraphs=True, para_joiner='\n\n'):
-        print("hello")
-        with open(file, 'rb') as fh:
-            self.fh = fh
-            cctx = zstandard.ZstdDecompressor()
-            reader = io.BufferedReader(cctx.stream_reader(fh))
-            rdr = jsonlines.Reader(reader)
-            yield from handle_jsonl(rdr, get_meta, autojoin_paragraphs, para_joiner)
+        self.fh = open(file, 'rb')
+        cctx = zstandard.ZstdDecompressor()
+        reader = io.BufferedReader(cctx.stream_reader(self.fh))
+        rdr = jsonlines.Reader(reader)
+        yield from handle_jsonl(rdr, get_meta, autojoin_paragraphs, para_joiner)
 
 
     def read_jsonl_tar(self, file, get_meta=False, autojoin_paragraphs=True, para_joiner='\n\n'):
